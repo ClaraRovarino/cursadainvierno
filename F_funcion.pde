@@ -1,7 +1,6 @@
 void jugando() {
   //actualizo jugadorX:
-  jugadorX +=  (mouseX-jugadorX)* 1;
-
+  jugadorX +=  (mouseX-jugadorX)*0.10;
 
 
   //dibujo el fondo:
@@ -29,24 +28,32 @@ void jugando() {
     if ( naranjaY[i]>height+100) {
       naranjaY[i] = -100;
       naranjaX[i] = random(50, 550);
+      fallos += 1;
     }
-
     //evaluo colision:
     //veo si sumo punto (por colision entre naranja y canasta:
     stroke(255);
-              //line(naranjaX[i], naranjaY[i], jugadorX, jugadorY);
+    //line(naranjaX[i], naranjaY[i], jugadorX, jugadorY);
     float d = dist(naranjaX[i], naranjaY[i], jugadorX, jugadorY);
-    if ( d<10 ) { //<< revisar que distancia
-     //sumo punto 
-     puntaje += 1;
-      
+    if ( d<50 ) { //<< revisar que distancia
+      //sumo punto 
+      puntaje += 1;
+      naranjaY[i] = -100;
+      naranjaX[i] = random(50, 550);
     }
-   
-   
-   
+    
   }
-
-  text("Puntaje: "+ puntaje, 90, 100);
+  //preguntar si gana:
+  if (puntaje >= 30) {
+    estado = 2;
+  }
+  //preguntar si pierde:
+  if (fallos >= 10){
+    estado = 3; 
+  }
+  fill(0);
+  text("Puntaje: "+ puntaje, 50, 100);
+  text("Fallos: "+ fallos, 400, 100);
 
   //dibujo la canasta:
   push();
@@ -55,7 +62,7 @@ void jugando() {
   pop();
 }
 
-void valoreInicialesJuego() {
+void valoresInicialesJuego() {
   //crear los arreglos de posiciones de naranjas
   numnaranjas = 5;
   naranjaX = new float[numnaranjas];
